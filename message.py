@@ -172,7 +172,9 @@ class Media(Message):
             self.reply_label.config(bg="gray80",
                                     fg=self.REPLY_FG,
                                     font=self.REPLY_FONT,
-                                    text=basename(self.message_str.decode()),
+                                    # return file name without path if it's a path, else return message_str
+                                    text=basename(self.message_str.decode()
+                                                  ).encode(),
                                     padx=3,
                                     wraplength=self.WRAPLENGTH,
                                     anchor="w",
@@ -185,9 +187,11 @@ class Media(Message):
                                   bg=self.MESSSAGE_BG,
                                   fg=self.MESSAGE_FG,
                                   wraplength=self.WRAPLENGTH,
-                                  justify="left",
+                                  anchor="w",
                                   font=self.MSG_FONT,
-                                  pady=0
+                                  pady=0,
+                                  # increase width so the user can click anywhere few pixels past the file icon
+                                  width=210
                                   )
             self.msg_label.pack(anchor="nw")
             # time label for displaying time received
@@ -244,7 +248,7 @@ if __name__ == '__main__':
             tk, "Hello! How are you doing?")
         n.create(datetime.utcnow())
         msg1.create(datetime.utcnow())
-    media = Media(tk, "<file path here>.mp3", "Ernesto")
+    media = Media(tk, "<path to your file here>.<extension>", "Ernesto")
     # this attribute wasn't set so it could be set from its instance
     media.ANCHOR = "nw"
     media.create(datetime.utcnow())
